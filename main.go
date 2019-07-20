@@ -188,7 +188,7 @@ func filterEmpties(in string, out string) {
 	_ = ioutil.WriteFile(out, filteredFile, 0644)
 }
 
-func individual(wg *sync.WaitGroup, filePath string, docid bool) {
+func individual(wg *sync.WaitGroup, filePath string, operation string) {
 	xmlFile, err := os.Open(filePath)
 	if err != nil {
 		fmt.Println(err)
@@ -199,11 +199,36 @@ func individual(wg *sync.WaitGroup, filePath string, docid bool) {
 	set := &Set{}
 	_ = xml.Unmarshal(data, &set)
 
-	if docid {
+	switch operation {
+	case "count":
+		count += len(set.Items)
+	case "docid":
+		for _, i := range set.Items {
+			fmt.Println(i.OrigID)
+		}
+	case "raw":
+		for _, i := range set.Items {
+			// All of the files within the collection have been tested to ensure that this tag does not occur anywhere else
+			fmt.Println("<DOC>")
+			fmt.Printf("<DOCID>")
+			fmt.Printf(i.OrigID)
+			fmt.Printf("</DOCID>\n")
+			fmt.Printf("<CATEGORY>")
+			fmt.Printf(i.OrigCategoryBreadcrumb)
+			fmt.Printf("</CATEGORY>\n")
+			fmt.Printf("<ORIGTITLE>%s</ORIGTITLE>\n", i.OrigTitle)
+			fmt.Println(i.Description)
+			fmt.Println("</DOC>")
+		}
+	default:
+		fmt.Println("We need an operation!")
+	}
+	if operation == "docid" {
 		for _, i := range set.Items {
 			fmt.Println(i.OrigID)
 		}
 	}
+
 	xmlFile.Close()
 	data = nil
 	set = nil
@@ -218,7 +243,7 @@ func countItemsInFolder(in string) {
 		}
 		wg.Add(1)
 		filePath := in + "/" + file.Name()
-		go individual(&wg, filePath, false)
+		go individual(&wg, filePath, "count")
 	}
 	wg.Wait()
 	fmt.Printf("Total Items: %d\n", count)
@@ -233,11 +258,23 @@ func docIDsInFolder(in string) {
 		}
 		wg.Add(1)
 		filePath := in + "/" + file.Name()
-		go individual(&wg, filePath, true)
-
+		go individual(&wg, filePath, "docids")
 	}
 	wg.Wait()
+}
 
+func raw(in string) {
+	files, _ := ioutil.ReadDir(in)
+	var wg sync.WaitGroup
+	for _, file := range files {
+		if file.Name() == ".DS_Store" {
+			continue
+		}
+		wg.Add(1)
+		filePath := in + "/" + file.Name()
+		go individual(&wg, filePath, "raw")
+	}
+	wg.Wait()
 }
 func main() {
 	opName := os.Args[1]
@@ -254,6 +291,11 @@ func main() {
 		inputFile := os.Args[2]
 		outputFile := os.Args[3]
 		filterEmpties(inputFile, outputFile)
+
+	case "raw":
+		inputFolder := os.Args[2]
+		raw(inputFolder)
+
 	default:
 		fmt.Println("Incorrect command line args")
 	}
