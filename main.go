@@ -1,46 +1,27 @@
 package main
 
-// Filter the XML for documents that have descriptions defined.
-// Build a CLI that allows the user to define what field that want spat out of the XML.
-// After all XML documents are parsed and determined, then spit out a list of all document ID's.
-// Create a one-dimensional array of these document_ids
-// Traverse the documents.tsv file, for all documents that do not exist in this one-dimensional array, then create the XML with the corresponding structure.
+/* Done
+Filter the XML for documents that have descriptions defined.
+After all XML documents are parsed and determined, then spit out a list of all document ID's.
+Create a one-dimensional array of these document_ids
+Traverse the documents.tsv file, for all documents that do not exist in this one-dimensional array, then create the XML with the corresponding structure.
 
-/*
-i.xml contains 34057 items
-f.xml contains 34580 items
-h.xml contains 34067 items
-e.xml contains 34679 items
-b.xml contains 35373 items
-g.xml contains 34367 items
-a.xml contains 35900 items
-d.xml contains 34755 items
-c.xml contains 35302 items
-Total Items: 313080
-
-j.xml contains 33789 items
-p.xml contains 33135 items
-r.xml contains 32710 items
-q.xml contains 32922 items
-n.xml contains 33265 items
-o.xml contains 33184 items
-m.xml contains 33590 items
-l.xml contains 33578 items
-k.xml contains 33653 items
-_missing.xml contains 65800 items
-Total Items: 365626
-
-Total total: 678706
-
-
-
+Todo
+Build a CLI that allows the user to define what field that want spat out of the XML. <- Edit raw and individual
 */
+
 import (
 	"encoding/xml"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"os"
+	"sort"
+	"strconv"
+	"strings"
 	"sync"
+
+	"github.com/valyala/tsvreader"
 )
 
 var count = 0
@@ -166,7 +147,9 @@ type Item struct {
 	} `xml:"ProductID"`
 }
 
-func filterEmpties(in string, out string) {
+// Give this function the original XML from Ebay, and create an output XML only containing documents that
+// had defined descriptions
+func removeEmpties(in string, out string) {
 	xmlFile, err := os.Open(in)
 	if err != nil {
 		fmt.Println(err)
@@ -202,13 +185,16 @@ func individual(wg *sync.WaitGroup, filePath string, operation string) {
 	switch operation {
 	case "count":
 		count += len(set.Items)
-	case "docid":
+
+	case "docids":
 		for _, i := range set.Items {
 			fmt.Println(i.OrigID)
 		}
 	case "raw":
 		for _, i := range set.Items {
-			// All of the files within the collection have been tested to ensure that this tag does not occur anywhere else
+			// All of the files within the collection have been tested to
+			// ensure that these tags do not occur anywhere
+			// This section needs to be CLIed
 			fmt.Println("<DOC>")
 			fmt.Printf("<DOCID>")
 			fmt.Printf(i.OrigID)
@@ -222,11 +208,6 @@ func individual(wg *sync.WaitGroup, filePath string, operation string) {
 		}
 	default:
 		fmt.Println("We need an operation!")
-	}
-	if operation == "docid" {
-		for _, i := range set.Items {
-			fmt.Println(i.OrigID)
-		}
 	}
 
 	xmlFile.Close()
@@ -276,25 +257,108 @@ func raw(in string) {
 	}
 	wg.Wait()
 }
+
+// Need to load in an array of docids
+// Need to sort this
+// Need to then create a function to see if ID is within this array
+
+func loadDocIDArray(in string) (numbers []int) {
+	fd, err := os.Open(in)
+	defer fd.Close()
+	if err != nil {
+		panic(fmt.Sprintf("open %s: %v", in, err))
+	}
+	var line int
+	for {
+		_, err := fmt.Fscanf(fd, "%d\n", &line)
+
+		if err != nil {
+			fmt.Println(err)
+			if err == io.EOF {
+				sort.Ints(numbers[:]) // Sort these
+				return
+			}
+			panic(fmt.Sprintf("Scan Failed %s: %v", in, err))
+
+		}
+		numbers = append(numbers, line)
+	}
+
+}
+
+func intInArray(haystack []int, needle int) (found bool) {
+	i := sort.Search(len(haystack), func(i int) bool { return haystack[i] >= needle })
+	if i < len(haystack) && haystack[i] == needle {
+		return true
+	}
+	return false
+}
+
+func createXMLFromMissingDocs(alreadySavedDocIDs []int, inputTSVFile string, out string) {
+	var missingItems []Item
+
+	data, _ := os.Open(inputTSVFile)
+	r := tsvreader.New(data)
+
+	for r.Next() {
+		id := r.String()
+		price := strings.Trim(r.String(), " ")
+		title := strings.Trim(r.String(), " ")
+		cat := strings.Trim(r.String(), " ")
+		image := strings.Trim(r.String(), " ")
+
+		item := Item{
+			OrigID:                 id,
+			OrigPrice:              price,
+			OrigTitle:              title,
+			OrigCategoryBreadcrumb: cat,
+			OrigItemIDImageURL:     image,
+		}
+		needle, _ := strconv.Atoi(id)
+
+		if !intInArray(alreadySavedDocIDs, needle) {
+			fmt.Printf("%d not found\n", needle)
+			missingItems = append(missingItems, item)
+		}
+	}
+	// Create a Set struct, to create correct XML
+	set := Set{
+		Items: missingItems,
+	}
+	filteredFile, _ := xml.MarshalIndent(set, "", " ")
+	_ = ioutil.WriteFile(out, filteredFile, 0644)
+
+}
 func main() {
 	opName := os.Args[1]
 	switch opName {
+
 	case "count":
 		inputFolder := os.Args[2]
 		countItemsInFolder(inputFolder)
 
-	case "docid":
+	case "docids":
 		inputFolder := os.Args[2]
 		docIDsInFolder(inputFolder)
 
 	case "filter":
 		inputFile := os.Args[2]
 		outputFile := os.Args[3]
-		filterEmpties(inputFile, outputFile)
+		removeEmpties(inputFile, outputFile)
 
 	case "raw":
 		inputFolder := os.Args[2]
 		raw(inputFolder)
+
+	case "createmissingxml":
+		alreadyFoundDocIDsFile := os.Args[2]
+		allDocIDs := os.Args[3]
+		outputXMLpath := os.Args[4]
+
+		foundDocIds := loadDocIDArray(alreadyFoundDocIDsFile)
+		fmt.Printf("Documents Found %d\n", len(foundDocIds))
+
+		createXMLFromMissingDocs(foundDocIds, allDocIDs, outputXMLpath)
 
 	default:
 		fmt.Println("Incorrect command line args")
