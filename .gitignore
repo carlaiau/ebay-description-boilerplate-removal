@@ -8,3 +8,6 @@ raw/1.xml.zip
 raw/2.xml
 raw/2.xml.zip
 Ebay-Collection
+*.tsv
+*.xml
+*.zip

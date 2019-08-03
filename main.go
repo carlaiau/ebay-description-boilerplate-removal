@@ -147,6 +147,15 @@ type Item struct {
 	} `xml:"ProductID"`
 }
 
+type Judgement struct {
+	DocID   string
+	Queries []Query
+}
+type Query struct {
+	ID       int
+	Relevant int
+}
+
 // Give this function the original XML from Ebay, and create an output XML only containing documents that
 // had defined descriptions
 func removeEmpties(in string, out string) {
@@ -199,11 +208,15 @@ func individual(wg *sync.WaitGroup, filePath string, operation string) {
 			fmt.Printf("<DOCID>")
 			fmt.Printf(i.OrigID)
 			fmt.Printf("</DOCID>\n")
+			fmt.Printf("<ORIGTITLE>%s</ORIGTITLE>\n", i.OrigTitle)
 			fmt.Printf("<CATEGORY>")
 			fmt.Printf(i.OrigCategoryBreadcrumb)
 			fmt.Printf("</CATEGORY>\n")
-			fmt.Printf("<ORIGTITLE>%s</ORIGTITLE>\n", i.OrigTitle)
-			fmt.Println(i.Description)
+			/*
+
+
+				fmt.Println(i.Description)
+			*/
 			fmt.Println("</DOC>")
 		}
 	default:
@@ -283,7 +296,6 @@ func loadDocIDArray(in string) (numbers []int) {
 		}
 		numbers = append(numbers, line)
 	}
-
 }
 
 func intInArray(haystack []int, needle int) (found bool) {
@@ -329,6 +341,41 @@ func createXMLFromMissingDocs(alreadySavedDocIDs []int, inputTSVFile string, out
 	_ = ioutil.WriteFile(out, filteredFile, 0644)
 
 }
+
+func convertJudgementsFromTSV(in string) {
+	data, _ := os.Open(in)
+	r := tsvreader.New(data)
+
+	judgements := []Judgement{}
+
+	for r.Next() {
+		docID := r.String()
+		judgement := Judgement{
+			DocID:   docID,
+			Queries: []Query{},
+		}
+
+		// Then keep looking till then end and they're they queryIDs
+		for i := 1; r.HasCols(); i++ {
+			query := Query{}
+			query.ID = i
+			query.Relevant = r.Int()
+			judgement.Queries = append(judgement.Queries, query)
+		}
+
+		judgements = append(judgements, judgement)
+	}
+
+	for _, judgement := range judgements {
+		for _, query := range judgement.Queries {
+			fmt.Printf("%d 0 %s %d\n", query.ID, judgement.DocID, query.Relevant)
+		}
+	}
+
+	/* filteredFile, _ := xml.MarshalIndent(set, "", " ")
+	_ = ioutil.WriteFile(out, filteredFile, 0644) */
+
+}
 func main() {
 	opName := os.Args[1]
 	switch opName {
@@ -359,6 +406,10 @@ func main() {
 		fmt.Printf("Documents Found %d\n", len(foundDocIds))
 
 		createXMLFromMissingDocs(foundDocIds, allDocIDs, outputXMLpath)
+
+	case "convertjudgements":
+		inFile := os.Args[2]
+		convertJudgementsFromTSV(inFile)
 
 	default:
 		fmt.Println("Incorrect command line args")
