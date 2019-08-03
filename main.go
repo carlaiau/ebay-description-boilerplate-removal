@@ -355,11 +355,15 @@ func convertJudgementsFromTSV(in string) {
 			Queries: []Query{},
 		}
 
-		// Then keep looking till then end and they're they queryIDs
+		// Each of the following columns represent the binary relevancy of that columns query ID
 		for i := 1; r.HasCols(); i++ {
+			relevancy := r.Int()
+			if relevancy != 1 {
+				relevancy = 0 // Set -1's to 0.
+			}
 			query := Query{}
 			query.ID = i
-			query.Relevant = r.Int()
+			query.Relevant = relevancy
 			judgement.Queries = append(judgement.Queries, query)
 		}
 
