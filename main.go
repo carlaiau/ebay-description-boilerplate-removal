@@ -205,18 +205,15 @@ func individual(wg *sync.WaitGroup, filePath string, operation string) {
 			// ensure that these tags do not occur anywhere
 			// This section needs to be CLIed
 			fmt.Println("<DOC>")
-			fmt.Printf("<DOCID>")
+			fmt.Printf("<DOCNO>")
 			fmt.Printf(i.OrigID)
-			fmt.Printf("</DOCID>\n")
+			fmt.Printf("</DOCNO>\n")
 			fmt.Printf("<ORIGTITLE>%s</ORIGTITLE>\n", i.OrigTitle)
+
 			fmt.Printf("<CATEGORY>")
 			fmt.Printf(i.OrigCategoryBreadcrumb)
 			fmt.Printf("</CATEGORY>\n")
-			/*
-
-
-				fmt.Println(i.Description)
-			*/
+			fmt.Println(i.Description)
 			fmt.Println("</DOC>")
 		}
 	default:
@@ -226,7 +223,6 @@ func individual(wg *sync.WaitGroup, filePath string, operation string) {
 	xmlFile.Close()
 	data = nil
 	set = nil
-	wg.Done()
 }
 func countItemsInFolder(in string) {
 	files, _ := ioutil.ReadDir(in)
@@ -264,11 +260,9 @@ func raw(in string) {
 		if file.Name() == ".DS_Store" {
 			continue
 		}
-		wg.Add(1)
 		filePath := in + "/" + file.Name()
-		go individual(&wg, filePath, "raw")
+		individual(&wg, filePath, "raw")
 	}
-	wg.Wait()
 }
 
 // Need to load in an array of docids
@@ -358,13 +352,13 @@ func convertJudgementsFromTSV(in string) {
 		// Each of the following columns represent the binary relevancy of that columns query ID
 		for i := 1; r.HasCols(); i++ {
 			relevancy := r.Int()
-			if relevancy != 1 {
-				relevancy = 0 // Set -1's to 0.
+			// Only add relevancy if it equals 1.
+			if relevancy == 1 {
+				query := Query{}
+				query.ID = i
+				query.Relevant = relevancy
+				judgement.Queries = append(judgement.Queries, query)
 			}
-			query := Query{}
-			query.ID = i
-			query.Relevant = relevancy
-			judgement.Queries = append(judgement.Queries, query)
 		}
 
 		judgements = append(judgements, judgement)
