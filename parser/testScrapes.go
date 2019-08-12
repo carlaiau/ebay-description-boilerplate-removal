@@ -37,7 +37,7 @@ func getMetrics(filePath string) {
 	xml := loadSupersetFromFile(filePath)
 	for _, item := range xml.Items {
 		itemCount++
-		if item.Title != "" {
+		if item.Title != "" { // The Title is defined
 			foundCount++
 			if strings.Trim(strings.ToLower(item.Title), " ") != strings.Trim(strings.ToLower(item.OrigTitle), " ") {
 				inCorrectCount++
@@ -45,7 +45,7 @@ func getMetrics(filePath string) {
 				fmt.Printf("%s\n", item.Title)
 				fmt.Printf("%s\n\n", item.OrigTitle)
 			}
-			if item.Description != "" {
+			if item.Description != "" { // The Description is defined
 				descriptionCount++
 			}
 		}
@@ -65,11 +65,3 @@ func getMissing(filePath string) {
 		}
 	}
 }
-
-// 1760267	4.76	Adventures Of Cyclops And Phoenix Lot 4 Bks Set 1 2 3 4 VF NM X-Men Apocalypse  	 Collectibles > Comics > Modern Age (1992-Now) > Superhero > Other Modern Age Superheroes	http://i.ebayimg.com/00/s/MTA2N1gxNTk5/z/jw8AAOSwzvlW9Iu0/$_57.JPG?set_id=8800005007
-
-// <OrigDocId>1000006</OrigDocId>
-// <OrigPrice>12.74</OrigPrice>
-// <OrigTitle>SCOUTS OF THAILAND - SENIOR GIRL SCOUTS (GUIDES) Epaulettes Patch (PAIR)</OrigTitle>
-// <OrigCategoryBreadcrumb>Collectibles &gt; Historical Memorabilia &gt; Fraternal Organizations &gt; Boy Scouts &gt; Badges &amp; Patches &gt; Jamboree Patches</OrigCategoryBreadcrumb>
-// <OrigItemIDImageURL>http://i.ebayimg.com/00/s/MTYwMFgxNDQ5/z/tn0AAOSwmfhX2sxd/$_1.JPG?set_id=880000500F</OrigItemIDImageURL>

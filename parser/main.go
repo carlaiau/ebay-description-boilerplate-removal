@@ -97,8 +97,8 @@ func bigKahuna(unProcessedDocuments []Document) {
 func main() {
 	opName := os.Args[1]
 	switch opName {
-	case "scrape":
-		appID = os.Args[2]
+	case "scrape": // Scrape data from Ebay
+		appID = os.Args[2] // AppKey must be fed in via command line
 		inputFilePath := os.Args[3]
 		outputFilePath := os.Args[4]
 
