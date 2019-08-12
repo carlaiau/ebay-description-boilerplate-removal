@@ -8,9 +8,9 @@ If these match, then we conclude that the product is correctly identified. 13
 After we have 20 correctly identified product IDs, we then query the Shopping API to get the actual details about each listing
 
 ### Prerequisities
-Go
-Ebay Production API ID
-TSV File of products
+- Go
+- Ebay Production API ID
+- TSV File of products
 
 ### Usage
 ```
