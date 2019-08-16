@@ -15,6 +15,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"strings"
 )
 
 type Set struct {
@@ -245,30 +246,32 @@ func docIDsInFolder(in string) {
 	}
 }
 
-func createRaw(in string) {
+func createRaw(in string, out string) {
 	files, _ := ioutil.ReadDir(in)
 	for _, file := range files {
 		if file.Name() == ".DS_Store" {
 			continue
 		}
-		filePath := in + "/" + file.Name()
-		set := loadSet(filePath)
-		for _, i := range set.Items {
-			// All of the files within the collection have been tested to
-			// ensure that these tags do not occur anywhere
-			// This section needs to be CLIed
-			fmt.Println("<DOC>")
-			fmt.Printf("<DOCNO>")
-			fmt.Printf(i.OrigID)
-			fmt.Printf("</DOCNO>\n")
-			fmt.Printf("<ORIGTITLE>%s</ORIGTITLE>\n", i.OrigTitle)
+		inPath := in + "/" + file.Name()
+		outPath := in + "/" + file.Name()
+		set := loadSet(inPath)
 
-			fmt.Printf("<CATEGORY>")
-			fmt.Printf(i.OrigCategoryBreadcrumb)
-			fmt.Printf("</CATEGORY>\n")
-			fmt.Println(i.Description)
-			fmt.Println("</DOC>")
+		var b strings.Builder
+		for _, i := range set.Items {
+			fmt.Fprintf(&b, "<DOC>\n")
+			fmt.Fprintf(&b, "<DOCNO>")
+			fmt.Fprintf(&b, i.OrigID)
+			fmt.Fprintf(&b, "</DOCNO>\n")
+			fmt.Fprintf(&b, "<ORIGTITLE>%s</ORIGTITLE>\n", i.OrigTitle)
+
+			fmt.Fprintf(&b, "<CATEGORY>")
+			fmt.Fprintf(&b, i.OrigCategoryBreadcrumb)
+			fmt.Fprintf(&b, "</CATEGORY>\n")
+			fmt.Fprintf(&b, i.Description)
+			fmt.Fprintf(&b, "</DOC>\n")
 		}
+		_ = ioutil.WriteFile(outPath, []byte(b.String()), 0644)
+
 	}
 }
 
@@ -290,11 +293,6 @@ func main() {
 		outputFolder := os.Args[3]
 		removeEmpties(inputFolder, outputFolder)
 
-	// Needs Piped
-	case "createRaw":
-		inputFolder := os.Args[2]
-		createRaw(inputFolder)
-
 	// Needs piped
 	case "createMissingXML":
 		alreadyFoundDocIDsFile := os.Args[2]
@@ -305,6 +303,12 @@ func main() {
 		fmt.Printf("Documents Found %d\n", len(foundDocIDs))
 
 		createXMLFromMissingDocs(foundDocIDs, originalDocuments, outputXMLpath)
+
+	// Needs Piped
+	case "createRaw":
+		inputFolder := os.Args[2]
+		outputFolder := os.Args[3]
+		createRaw(inputFolder, outputFolder)
 
 	// Needs piped
 	case "convertJudgements":

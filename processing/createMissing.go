@@ -76,7 +76,6 @@ func createXMLFromMissingDocs(alreadySavedDocIDs []int, inputTSVFile string, out
 		needle, _ := strconv.Atoi(id)
 
 		if !intInArray(alreadySavedDocIDs, needle) {
-			fmt.Printf("%d not found\n", needle)
 			missingItems = append(missingItems, item)
 		}
 	}
