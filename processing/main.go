@@ -13,22 +13,19 @@ Build a CLI that allows the user to define what field that want spat out of the 
 import (
 	"encoding/xml"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"os"
-	"sort"
-	"strconv"
-	"strings"
-	"sync"
-
-	"github.com/valyala/tsvreader"
 )
 
-var count = 0
-
 type Set struct {
-	XMLName xml.Name `xml:"Superset"`
+	XMLName xml.Name `xml:"Superset"` // Remember about the Capitalisatio of this
 	Items   []Item   `xml:"Item"`
+}
+
+type Count struct {
+	total       int
+	titles      int
+	description int
 }
 
 // Care of https://www.onlinetool.io/xmltogo/
@@ -147,40 +144,7 @@ type Item struct {
 	} `xml:"ProductID"`
 }
 
-type Judgement struct {
-	DocID   string
-	Queries []Query
-}
-type Query struct {
-	ID       int
-	Relevant int
-}
-
-// Give this function the original XML from Ebay, and create an output XML only containing documents that
-// had defined descriptions
-func removeEmpties(in string, out string) {
-	xmlFile, err := os.Open(in)
-	if err != nil {
-		fmt.Println(err)
-	}
-	defer xmlFile.Close()
-
-	data, _ := ioutil.ReadAll(xmlFile)
-	set := &Set{}
-
-	_ = xml.Unmarshal(data, &set)
-
-	filteredData := &Set{}
-	for _, i := range set.Items {
-		if i.Description != "" {
-			filteredData.Items = append(filteredData.Items, i) // Add another Item to the array
-		}
-	}
-	filteredFile, _ := xml.MarshalIndent(filteredData, "", " ")
-	_ = ioutil.WriteFile(out, filteredFile, 0644)
-}
-
-func individual(wg *sync.WaitGroup, filePath string, operation string) {
+func loadSet(filePath string) *Set {
 	xmlFile, err := os.Open(filePath)
 	if err != nil {
 		fmt.Println(err)
@@ -189,17 +153,106 @@ func individual(wg *sync.WaitGroup, filePath string, operation string) {
 
 	data, _ := ioutil.ReadAll(xmlFile)
 	set := &Set{}
-	_ = xml.Unmarshal(data, &set)
+	err = xml.Unmarshal(data, &set)
+	if err != nil {
+		fmt.Printf("%s", err)
+	}
+	xmlFile.Close()
+	return set
+}
 
-	switch operation {
-	case "count":
-		count += len(set.Items)
+/*
+ *
+ * Given a folder of XML dumps for each file,
+ * remove the items that did not have a title
+ * defined, and save the remaining items in an
+ * identically named file in the output folder
+ *
+ */
 
-	case "docids":
+func removeEmpties(in string, out string) {
+	files, _ := ioutil.ReadDir(in)
+	for _, file := range files {
+		if file.Name() == ".DS_Store" {
+			continue
+		}
+		inPath := "./" + in + "/" + file.Name()
+		outPath := "./" + out + "/" + file.Name()
+
+		set := loadSet(inPath)
+		filtered := &Set{}
+
+		for _, i := range set.Items {
+			if i.Title != "" {
+				filtered.Items = append(filtered.Items, i) // Add another Item to the array
+			}
+		}
+		filteredFile, _ := xml.MarshalIndent(filtered, "", " ")
+		_ = ioutil.WriteFile(outPath, filteredFile, 0644)
+
+	}
+
+}
+
+/*
+ *
+ * Create basic analysis of a folder of XMLs.
+ * Prints to std.out the number of items, titles and descriptions
+ *
+ */
+func countItemsInFolder(in string) {
+	files, _ := ioutil.ReadDir(in)
+	totalCounts := Count{0, 0, 0}
+	fmt.Printf("File Counts\nFilename\tFiles\tTitle\tDescription\n")
+	for _, file := range files {
+		if file.Name() == ".DS_Store" {
+			continue
+		}
+		filePath := "./" + in + "/" + file.Name()
+		set := loadSet(filePath)
+
+		fileCounts := Count{len(set.Items), 0, 0}
+
+		for _, i := range set.Items {
+			if i.Title != "" {
+				fileCounts.titles++
+			}
+			if i.Description != "" {
+				fileCounts.description++
+			}
+		}
+
+		totalCounts.total += fileCounts.total
+		totalCounts.titles += fileCounts.titles
+		totalCounts.description += fileCounts.description
+		fmt.Printf("%s\t\t%d\t%d\t%d\n", file.Name(), fileCounts.total, fileCounts.titles, fileCounts.description)
+	}
+	fmt.Printf("\tTotals\nFiles\tTitle\tDescription\n")
+	fmt.Printf("%d\t%d\t%d\n", totalCounts.total, totalCounts.titles, totalCounts.description)
+}
+
+func docIDsInFolder(in string) {
+	files, _ := ioutil.ReadDir(in)
+	for _, file := range files {
+		if file.Name() == ".DS_Store" {
+			continue
+		}
+		filePath := in + "/" + file.Name()
+		set := loadSet(filePath)
 		for _, i := range set.Items {
 			fmt.Println(i.OrigID)
 		}
-	case "raw":
+	}
+}
+
+func createRaw(in string) {
+	files, _ := ioutil.ReadDir(in)
+	for _, file := range files {
+		if file.Name() == ".DS_Store" {
+			continue
+		}
+		filePath := in + "/" + file.Name()
+		set := loadSet(filePath)
 		for _, i := range set.Items {
 			// All of the files within the collection have been tested to
 			// ensure that these tags do not occur anywhere
@@ -216,196 +269,45 @@ func individual(wg *sync.WaitGroup, filePath string, operation string) {
 			fmt.Println(i.Description)
 			fmt.Println("</DOC>")
 		}
-	default:
-		fmt.Println("We need an operation!")
-	}
-
-	xmlFile.Close()
-	data = nil
-	set = nil
-}
-func countItemsInFolder(in string) {
-	files, _ := ioutil.ReadDir(in)
-	var wg sync.WaitGroup
-	for _, file := range files {
-		if file.Name() == ".DS_Store" {
-			continue
-		}
-		wg.Add(1)
-		filePath := in + "/" + file.Name()
-		go individual(&wg, filePath, "count")
-	}
-	wg.Wait()
-	fmt.Printf("Total Items: %d\n", count)
-}
-
-func docIDsInFolder(in string) {
-	files, _ := ioutil.ReadDir(in)
-	var wg sync.WaitGroup
-	for _, file := range files {
-		if file.Name() == ".DS_Store" {
-			continue
-		}
-		wg.Add(1)
-		filePath := in + "/" + file.Name()
-		go individual(&wg, filePath, "docids")
-	}
-	wg.Wait()
-}
-
-func raw(in string) {
-	files, _ := ioutil.ReadDir(in)
-	var wg sync.WaitGroup
-	for _, file := range files {
-		if file.Name() == ".DS_Store" {
-			continue
-		}
-		filePath := in + "/" + file.Name()
-		individual(&wg, filePath, "raw")
 	}
 }
 
-// Need to load in an array of docids
-// Need to sort this
-// Need to then create a function to see if ID is within this array
-
-func loadDocIDArray(in string) (numbers []int) {
-	fd, err := os.Open(in)
-	defer fd.Close()
-	if err != nil {
-		panic(fmt.Sprintf("open %s: %v", in, err))
-	}
-	var line int
-	for {
-		_, err := fmt.Fscanf(fd, "%d\n", &line)
-
-		if err != nil {
-			fmt.Println(err)
-			if err == io.EOF {
-				sort.Ints(numbers[:]) // Sort these
-				return
-			}
-			panic(fmt.Sprintf("Scan Failed %s: %v", in, err))
-
-		}
-		numbers = append(numbers, line)
-	}
-}
-
-func intInArray(haystack []int, needle int) (found bool) {
-	i := sort.Search(len(haystack), func(i int) bool { return haystack[i] >= needle })
-	if i < len(haystack) && haystack[i] == needle {
-		return true
-	}
-	return false
-}
-
-func createXMLFromMissingDocs(alreadySavedDocIDs []int, inputTSVFile string, out string) {
-	var missingItems []Item
-
-	data, _ := os.Open(inputTSVFile)
-	r := tsvreader.New(data)
-
-	for r.Next() {
-		id := r.String()
-		price := strings.Trim(r.String(), " ")
-		title := strings.Trim(r.String(), " ")
-		cat := strings.Trim(r.String(), " ")
-		image := strings.Trim(r.String(), " ")
-
-		item := Item{
-			OrigID:                 id,
-			OrigPrice:              price,
-			OrigTitle:              title,
-			OrigCategoryBreadcrumb: cat,
-			OrigItemIDImageURL:     image,
-		}
-		needle, _ := strconv.Atoi(id)
-
-		if !intInArray(alreadySavedDocIDs, needle) {
-			fmt.Printf("%d not found\n", needle)
-			missingItems = append(missingItems, item)
-		}
-	}
-	// Create a Set struct, to create correct XML
-	set := Set{
-		Items: missingItems,
-	}
-	filteredFile, _ := xml.MarshalIndent(set, "", " ")
-	_ = ioutil.WriteFile(out, filteredFile, 0644)
-
-}
-
-func convertJudgementsFromTSV(in string) {
-	data, _ := os.Open(in)
-	r := tsvreader.New(data)
-
-	judgements := []Judgement{}
-
-	for r.Next() {
-		docID := r.String()
-		judgement := Judgement{
-			DocID:   docID,
-			Queries: []Query{},
-		}
-
-		// Each of the following columns represent the binary relevancy of that columns query ID
-		for i := 1; r.HasCols(); i++ {
-			relevancy := r.Int()
-			// Only add relevancy if it equals 1.
-			if relevancy == 1 {
-				query := Query{}
-				query.ID = i
-				query.Relevant = relevancy
-				judgement.Queries = append(judgement.Queries, query)
-			}
-		}
-
-		judgements = append(judgements, judgement)
-	}
-
-	for _, judgement := range judgements {
-		for _, query := range judgement.Queries {
-			fmt.Printf("%d 0 %s %d\n", query.ID, judgement.DocID, query.Relevant)
-		}
-	}
-
-	/* filteredFile, _ := xml.MarshalIndent(set, "", " ")
-	_ = ioutil.WriteFile(out, filteredFile, 0644) */
-
-}
 func main() {
 	opName := os.Args[1]
 	switch opName {
 
-	case "count":
+	case "countItems":
 		inputFolder := os.Args[2]
 		countItemsInFolder(inputFolder)
 
-	case "docids":
+	// Needs Piped
+	case "getDocIDs":
 		inputFolder := os.Args[2]
 		docIDsInFolder(inputFolder)
 
-	case "filter":
-		inputFile := os.Args[2]
-		outputFile := os.Args[3]
-		removeEmpties(inputFile, outputFile)
-
-	case "raw":
+	case "removeEmpties":
 		inputFolder := os.Args[2]
-		raw(inputFolder)
+		outputFolder := os.Args[3]
+		removeEmpties(inputFolder, outputFolder)
 
-	case "createmissingxml":
+	// Needs Piped
+	case "createRaw":
+		inputFolder := os.Args[2]
+		createRaw(inputFolder)
+
+	// Needs piped
+	case "createMissingXML":
 		alreadyFoundDocIDsFile := os.Args[2]
-		allDocIDs := os.Args[3]
+		originalDocuments := os.Args[3]
 		outputXMLpath := os.Args[4]
 
-		foundDocIds := loadDocIDArray(alreadyFoundDocIDsFile)
-		fmt.Printf("Documents Found %d\n", len(foundDocIds))
+		foundDocIDs := loadDocIDArray(alreadyFoundDocIDsFile)
+		fmt.Printf("Documents Found %d\n", len(foundDocIDs))
 
-		createXMLFromMissingDocs(foundDocIds, allDocIDs, outputXMLpath)
+		createXMLFromMissingDocs(foundDocIDs, originalDocuments, outputXMLpath)
 
-	case "convertjudgements":
+	// Needs piped
+	case "convertJudgements":
 		inFile := os.Args[2]
 		convertJudgementsFromTSV(inFile)
 

@@ -11,3 +11,6 @@ Ebay-Collection
 *.tsv
 *.xml
 *.zip
+processing/processing
+parser/parser
+parser/Ebay-parser
