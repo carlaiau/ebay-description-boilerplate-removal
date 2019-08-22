@@ -1,4 +1,12 @@
-File Counts
+These files are the complete Ebay Dumps as described in the struct:
+https://github.com/carlaiau/ebay-description-boilerplate-removal/blob/master/processing/main.go#L33-#L146
+
+a - r.xml contain the scrape results from the intial API Endpoint after removal of empty results. 
+s.xml contains the results from the the secondary API Endpoint after removal of empty results.
+t.xml contains the documents not retrieved via API, but recreated from the original documents.tsv file.
+
+Empty was based on a missing title, not a missing description.
+
 Filename	Files	Title	Description
 a.xml		35901	35901	35900
 b.xml		35375	35375	35373
@@ -20,6 +28,7 @@ q.xml		32923	32923	32922
 r.xml		32711	32711	32710
 s.xml		65805	65805	65800
 t.xml		220937	0	0
-	Totals
+
+Totals
 Files	Title	Description
 899682	678745	678706

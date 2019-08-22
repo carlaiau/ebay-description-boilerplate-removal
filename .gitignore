@@ -12,6 +12,7 @@ Ebay-Collection
 *.xml
 *.exe
 *.zip
+*.raw
 processing/processing
 parser/parser
 parser/Ebay-parser

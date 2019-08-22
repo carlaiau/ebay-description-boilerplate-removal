@@ -145,6 +145,11 @@ type Item struct {
 	} `xml:"ProductID"`
 }
 
+/*
+ *
+ * Load a set given a filePath
+ *
+ */
 func loadSet(filePath string) *Set {
 	xmlFile, err := os.Open(filePath)
 	if err != nil {
@@ -170,7 +175,6 @@ func loadSet(filePath string) *Set {
  * identically named file in the output folder
  *
  */
-
 func removeEmpties(in string, out string) {
 	files, _ := ioutil.ReadDir(in)
 	for _, file := range files {
@@ -232,6 +236,14 @@ func countItemsInFolder(in string) {
 	fmt.Printf("%d\t%d\t%d\n", totalCounts.total, totalCounts.titles, totalCounts.description)
 }
 
+/*
+ *
+ * outputs to std.out every docID found in the folder.
+ * Used to generate a one dimensional array of the document IDs
+ * that were found in our scrape, so that we can determine the
+ * missing documents that need reintroduced via documents.tsv
+ *
+ */
 func docIDsInFolder(in string) {
 	files, _ := ioutil.ReadDir(in)
 	for _, file := range files {
@@ -246,6 +258,12 @@ func docIDsInFolder(in string) {
 	}
 }
 
+/*
+ *
+ * Creates files that are ready to be indexed by ATIRE
+ * The initial Files only contain docID, title, category and description
+ * Adding other fields from the original struct is straight forward
+ */
 func createRaw(in string, out string) {
 	files, _ := ioutil.ReadDir(in)
 	for _, file := range files {
@@ -253,7 +271,7 @@ func createRaw(in string, out string) {
 			continue
 		}
 		inPath := in + "/" + file.Name()
-		outPath := in + "/" + file.Name()
+		outPath := out + "/" + file.Name()
 		set := loadSet(inPath)
 
 		var b strings.Builder
@@ -264,11 +282,11 @@ func createRaw(in string, out string) {
 			fmt.Fprintf(&b, "</DOCNO>\n")
 			fmt.Fprintf(&b, "<ORIGTITLE>%s</ORIGTITLE>\n", i.OrigTitle)
 
-			//fmt.Fprintf(&b, "<CATEGORY>")
-			//fmt.Fprintf(&b, i.OrigCategoryBreadcrumb)
-			//fmt.Fprintf(&b, "</CATEGORY>\n")
-			//fmt.Fprintf(&b, i.Description)
-			fmt.Fprintf(&b, "</DOC>\n")
+			fmt.Fprintf(&b, "<CATEGORY>")
+			fmt.Fprintf(&b, i.OrigCategoryBreadcrumb)
+			fmt.Fprintf(&b, "</CATEGORY>\n")
+			fmt.Fprintf(&b, i.Description)
+			fmt.Fprintf(&b, "\n</DOC>\n")
 		}
 		_ = ioutil.WriteFile(outPath, []byte(b.String()), 0644)
 
