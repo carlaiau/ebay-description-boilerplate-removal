@@ -264,10 +264,10 @@ func createRaw(in string, out string) {
 			fmt.Fprintf(&b, "</DOCNO>\n")
 			fmt.Fprintf(&b, "<ORIGTITLE>%s</ORIGTITLE>\n", i.OrigTitle)
 
-			fmt.Fprintf(&b, "<CATEGORY>")
-			fmt.Fprintf(&b, i.OrigCategoryBreadcrumb)
-			fmt.Fprintf(&b, "</CATEGORY>\n")
-			fmt.Fprintf(&b, i.Description)
+			//fmt.Fprintf(&b, "<CATEGORY>")
+			//fmt.Fprintf(&b, i.OrigCategoryBreadcrumb)
+			//fmt.Fprintf(&b, "</CATEGORY>\n")
+			//fmt.Fprintf(&b, i.Description)
 			fmt.Fprintf(&b, "</DOC>\n")
 		}
 		_ = ioutil.WriteFile(outPath, []byte(b.String()), 0644)

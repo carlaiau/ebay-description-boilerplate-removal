@@ -10,7 +10,10 @@ raw/2.xml.zip
 Ebay-Collection
 *.tsv
 *.xml
+*.exe
 *.zip
 processing/processing
 parser/parser
 parser/Ebay-parser
+research/atire-linux-bin/
+research/t*/
