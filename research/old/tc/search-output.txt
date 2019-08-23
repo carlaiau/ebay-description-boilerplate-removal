@@ -1,0 +1,759 @@
+ATIRE Version 0.5 alpha (64-bit)
+Written (w) 2008-2014 Andrew Trotman, University of Otago
+<ATIREsearch>
+<query> kazar comic</query><numhits>18109</numhits><time>3</time>
+<topic>1</topic>
+<evaluations><MAP>0.036450</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> dc digest</query><numhits>17636</numhits><time>1</time>
+<topic>2</topic>
+<evaluations><MAP>0.134130</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> vintage bronze sculpture</query><numhits>256787</numhits><time>22</time>
+<topic>3</topic>
+<evaluations><MAP>0.196452</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> roman replica</query><numhits>5246</numhits><time>0</time>
+<topic>4</topic>
+<evaluations><MAP>0.830611</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> deer sculpture</query><numhits>11571</numhits><time>1</time>
+<topic>5</topic>
+<evaluations><MAP>0.859642</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> usmc</query><numhits>4017</numhits><time>0</time>
+<topic>6</topic>
+<evaluations><MAP>0.108030</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> multicam</query><numhits>2393</numhits><time>0</time>
+<topic>7</topic>
+<evaluations><MAP>0.161910</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> new woodland pants</query><numhits>66126</numhits><time>5</time>
+<topic>8</topic>
+<evaluations><MAP>0.291300</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> jim shore bunny</query><numhits>15955</numhits><time>2</time>
+<topic>9</topic>
+<evaluations><MAP>0.276213</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> disney traditions</query><numhits>28911</numhits><time>2</time>
+<topic>10</topic>
+<evaluations><MAP>0.233745</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> heartwood creek angels</query><numhits>7790</numhits><time>1</time>
+<topic>11</topic>
+<evaluations><MAP>0.044347</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> mexico carved wood</query><numhits>32454</numhits><time>3</time>
+<topic>12</topic>
+<evaluations><MAP>0.191470</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> oaxacan</query><numhits>1613</numhits><time>0</time>
+<topic>13</topic>
+<evaluations><MAP>0.288141</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> milagros</query><numhits>355</numhits><time>0</time>
+<topic>14</topic>
+<evaluations><MAP>0.252641</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> wooden radio</query><numhits>32072</numhits><time>3</time>
+<topic>15</topic>
+<evaluations><MAP>0.431087</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> rare zenith</query><numhits>36841</numhits><time>3</time>
+<topic>16</topic>
+<evaluations><MAP>0.610597</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> stromberg carlson</query><numhits>2286</numhits><time>0</time>
+<topic>17</topic>
+<evaluations><MAP>0.502924</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> hexagon box</query><numhits>53117</numhits><time>4</time>
+<topic>18</topic>
+<evaluations><MAP>0.550843</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> hinged trinket box</query><numhits>54416</numhits><time>5</time>
+<topic>19</topic>
+<evaluations><MAP>0.324276</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> blue glass box</query><numhits>114570</numhits><time>10</time>
+<topic>20</topic>
+<evaluations><MAP>0.168699</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> whale oil</query><numhits>18579</numhits><time>3</time>
+<topic>21</topic>
+<evaluations><MAP>0.102530</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> aladdin lamp</query><numhits>21122</numhits><time>2</time>
+<topic>22</topic>
+<evaluations><MAP>0.187561</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> glass oil lamp</query><numhits>71378</numhits><time>6</time>
+<topic>23</topic>
+<evaluations><MAP>0.208568</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> attack on titan</query><numhits>22229</numhits><time>2</time>
+<topic>24</topic>
+<evaluations><MAP>0.143660</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> tokyo ghoul</query><numhits>2930</numhits><time>0</time>
+<topic>25</topic>
+<evaluations><MAP>0.226744</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> joan crawford</query><numhits>1316</numhits><time>0</time>
+<topic>26</topic>
+<evaluations><MAP>0.412617</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> barbara feldon</query><numhits>394</numhits><time>0</time>
+<topic>27</topic>
+<evaluations><MAP>0.876715</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> coin banks vintage</query><numhits>246013</numhits><time>22</time>
+<topic>28</topic>
+<evaluations><MAP>0.087818</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> wooden bank</query><numhits>29630</numhits><time>3</time>
+<topic>29</topic>
+<evaluations><MAP>0.519019</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> building bank</query><numhits>19550</numhits><time>4</time>
+<topic>30</topic>
+<evaluations><MAP>0.113203</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> cgc ss stan lee</query><numhits>14606</numhits><time>2</time>
+<topic>31</topic>
+<evaluations><MAP>0.335390</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> spiderman 1</query><numhits>76237</numhits><time>9</time>
+<topic>32</topic>
+<evaluations><MAP>0.034365</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> marvel comics 9.8</query><numhits>0</numhits><time>0</time>
+<topic>33</topic>
+<evaluations><MAP>0.000000</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> gerz stein</query><numhits>11927</numhits><time>1</time>
+<topic>34</topic>
+<evaluations><MAP>0.323182</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> stein</query><numhits>11655</numhits><time>1</time>
+<topic>35</topic>
+<evaluations><MAP>0.057384</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> german beer mugs</query><numhits>49664</numhits><time>5</time>
+<topic>36</topic>
+<evaluations><MAP>0.108776</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> tole lamp</query><numhits>20736</numhits><time>2</time>
+<topic>37</topic>
+<evaluations><MAP>0.826979</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> brass cherub</query><numhits>21692</numhits><time>3</time>
+<topic>38</topic>
+<evaluations><MAP>0.533430</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> vintage desk</query><numhits>235747</numhits><time>20</time>
+<topic>39</topic>
+<evaluations><MAP>0.012544</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> predator hunters</query><numhits>2548</numhits><time>0</time>
+<topic>40</topic>
+<evaluations><MAP>0.431246</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> the walking dead 20</query><numhits>78898</numhits><time>7</time>
+<topic>41</topic>
+<evaluations><MAP>0.025555</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> walking dead comic #100</query><numhits>0</numhits><time>0</time>
+<topic>42</topic>
+<evaluations><MAP>0.000000</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> kankakee</query><numhits>590</numhits><time>0</time>
+<topic>43</topic>
+<evaluations><MAP>0.582893</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> galesburg illinois</query><numhits>4236</numhits><time>0</time>
+<topic>44</topic>
+<evaluations><MAP>0.509442</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> decatur illinois</query><numhits>5722</numhits><time>0</time>
+<topic>45</topic>
+<evaluations><MAP>0.375788</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> payphone</query><numhits>275</numhits><time>0</time>
+<topic>46</topic>
+<evaluations><MAP>0.271706</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> vintage rotary phone</query><numhits>243618</numhits><time>21</time>
+<topic>47</topic>
+<evaluations><MAP>0.134157</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> rotary wall phone</query><numhits>32326</numhits><time>3</time>
+<topic>48</topic>
+<evaluations><MAP>0.124644</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> parker duofold</query><numhits>4488</numhits><time>0</time>
+<topic>49</topic>
+<evaluations><MAP>0.398167</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> parker 51</query><numhits>5741</numhits><time>0</time>
+<topic>50</topic>
+<evaluations><MAP>0.278376</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> zippo harley</query><numhits>10097</numhits><time>1</time>
+<topic>51</topic>
+<evaluations><MAP>0.360869</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> camel zippo</query><numhits>7345</numhits><time>1</time>
+<topic>52</topic>
+<evaluations><MAP>0.519275</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> beer signs budweiser neon</query><numhits>45413</numhits><time>5</time>
+<topic>53</topic>
+<evaluations><MAP>0.218029</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> budweiser clydesdale</query><numhits>9147</numhits><time>1</time>
+<topic>54</topic>
+<evaluations><MAP>0.103001</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> skeleton keys</query><numhits>9726</numhits><time>1</time>
+<topic>55</topic>
+<evaluations><MAP>0.156467</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> padlock</query><numhits>4111</numhits><time>0</time>
+<topic>56</topic>
+<evaluations><MAP>0.103940</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> breyerfest</query><numhits>882</numhits><time>0</time>
+<topic>57</topic>
+<evaluations><MAP>0.527697</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> breyer roan</query><numhits>3803</numhits><time>0</time>
+<topic>58</topic>
+<evaluations><MAP>0.903417</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> vintage planter</query><numhits>235571</numhits><time>20</time>
+<topic>59</topic>
+<evaluations><MAP>0.102865</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> cat planter</query><numhits>14307</numhits><time>1</time>
+<topic>60</topic>
+<evaluations><MAP>0.651935</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> vintage pic</query><numhits>233631</numhits><time>21</time>
+<topic>61</topic>
+<evaluations><MAP>0.071522</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> toy steam roller</query><numhits>9847</numhits><time>1</time>
+<topic>62</topic>
+<evaluations><MAP>0.227978</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> plaid wool blanket</query><numhits>6540</numhits><time>1</time>
+<topic>63</topic>
+<evaluations><MAP>0.186599</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> pendleton blanket</query><numhits>5211</numhits><time>0</time>
+<topic>64</topic>
+<evaluations><MAP>0.624234</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> disney pewter</query><numhits>33117</numhits><time>3</time>
+<topic>65</topic>
+<evaluations><MAP>0.431310</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> disney ceramic figurines</query><numhits>70301</numhits><time>8</time>
+<topic>66</topic>
+<evaluations><MAP>0.232880</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> gumball machine</query><numhits>14767</numhits><time>2</time>
+<topic>67</topic>
+<evaluations><MAP>0.141091</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> penny machine</query><numhits>15362</numhits><time>1</time>
+<topic>68</topic>
+<evaluations><MAP>0.210907</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> soda pop sign</query><numhits>31121</numhits><time>3</time>
+<topic>69</topic>
+<evaluations><MAP>0.153086</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> fence sign</query><numhits>17034</numhits><time>1</time>
+<topic>70</topic>
+<evaluations><MAP>0.669835</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> match holder porcelain</query><numhits>29751</numhits><time>3</time>
+<topic>71</topic>
+<evaluations><MAP>0.248038</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> pig match</query><numhits>5837</numhits><time>0</time>
+<topic>72</topic>
+<evaluations><MAP>0.749237</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> bullet shot glass</query><numhits>47243</numhits><time>4</time>
+<topic>73</topic>
+<evaluations><MAP>0.073395</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> espresso shot glass</query><numhits>47025</numhits><time>4</time>
+<topic>74</topic>
+<evaluations><MAP>0.091705</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> vintage metal chest</query><numhits>246400</numhits><time>21</time>
+<topic>75</topic>
+<evaluations><MAP>0.355146</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> wooden tool box</query><numhits>62195</numhits><time>5</time>
+<topic>76</topic>
+<evaluations><MAP>0.185109</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> kennedy memorabilia</query><numhits>57932</numhits><time>5</time>
+<topic>77</topic>
+<evaluations><MAP>0.189962</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> king george queen mary</query><numhits>15416</numhits><time>2</time>
+<topic>78</topic>
+<evaluations><MAP>0.156324</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> masonic apron</query><numhits>2577</numhits><time>0</time>
+<topic>79</topic>
+<evaluations><MAP>0.361526</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> trail of painted ponys</query><numhits>105881</numhits><time>9</time>
+<topic>80</topic>
+<evaluations><MAP>0.438035</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> united delco</query><numhits>10377</numhits><time>1</time>
+<topic>81</topic>
+<evaluations><MAP>0.656513</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> christmas carolers</query><numhits>32654</numhits><time>3</time>
+<topic>82</topic>
+<evaluations><MAP>0.069267</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> calif license plates</query><numhits>18496</numhits><time>2</time>
+<topic>83</topic>
+<evaluations><MAP>0.039692</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> ny license plate</query><numhits>24467</numhits><time>2</time>
+<topic>84</topic>
+<evaluations><MAP>0.160008</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> military police patches</query><numhits>25029</numhits><time>2</time>
+<topic>85</topic>
+<evaluations><MAP>0.127061</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> white flower pitcher vase</query><numhits>38342</numhits><time>4</time>
+<topic>86</topic>
+<evaluations><MAP>0.059683</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> ride poster</query><numhits>10980</numhits><time>1</time>
+<topic>87</topic>
+<evaluations><MAP>0.389426</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> greek vase</query><numhits>9294</numhits><time>1</time>
+<topic>88</topic>
+<evaluations><MAP>0.768164</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> absolut vodka bottle</query><numhits>19339</numhits><time>2</time>
+<topic>89</topic>
+<evaluations><MAP>0.091539</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> holt howard</query><numhits>1589</numhits><time>0</time>
+<topic>90</topic>
+<evaluations><MAP>0.417676</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> girl scout books</query><numhits>17731</numhits><time>2</time>
+<topic>91</topic>
+<evaluations><MAP>0.088114</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> angel ornaments</query><numhits>21948</numhits><time>2</time>
+<topic>92</topic>
+<evaluations><MAP>0.119420</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> piggy piggy banks</query><numhits>17738</numhits><time>3</time>
+<topic>93</topic>
+<evaluations><MAP>0.125271</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> queen mary</query><numhits>9346</numhits><time>1</time>
+<topic>94</topic>
+<evaluations><MAP>0.107415</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> goofy phone</query><numhits>22062</numhits><time>2</time>
+<topic>95</topic>
+<evaluations><MAP>0.269941</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> tupperware bowls</query><numhits>7531</numhits><time>1</time>
+<topic>96</topic>
+<evaluations><MAP>0.115873</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> sluice</query><numhits>182</numhits><time>0</time>
+<topic>97</topic>
+<evaluations><MAP>0.469948</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> x-men 9.8</query><numhits>0</numhits><time>0</time>
+<topic>98</topic>
+<evaluations><MAP>0.000000</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> lenox picture frame</query><numhits>11522</numhits><time>1</time>
+<topic>99</topic>
+<evaluations><MAP>0.238597</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> precious moments figurines</query><numhits>32806</numhits><time>3</time>
+<topic>100</topic>
+<evaluations><MAP>0.301132</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> victorian photo album</query><numhits>34364</numhits><time>3</time>
+<topic>101</topic>
+<evaluations><MAP>0.284813</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> woven basket</query><numhits>10103</numhits><time>1</time>
+<topic>102</topic>
+<evaluations><MAP>0.131081</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> epaulettes</query><numhits>751</numhits><time>0</time>
+<topic>103</topic>
+<evaluations><MAP>0.105436</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> waterman rollerball pen</query><numhits>18387</numhits><time>2</time>
+<topic>104</topic>
+<evaluations><MAP>0.316473</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> magnavox transistor radio</query><numhits>20561</numhits><time>3</time>
+<topic>105</topic>
+<evaluations><MAP>0.104186</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> tom clark gnomes</query><numhits>6211</numhits><time>1</time>
+<topic>106</topic>
+<evaluations><MAP>0.121817</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> pinball machine</query><numhits>19210</numhits><time>2</time>
+<topic>107</topic>
+<evaluations><MAP>0.071607</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> scales of justice</query><numhits>96157</numhits><time>8</time>
+<topic>108</topic>
+<evaluations><MAP>0.312128</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> see hear speak no evil</query><numhits>21235</numhits><time>2</time>
+<topic>109</topic>
+<evaluations><MAP>0.326019</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> railroad book</query><numhits>26101</numhits><time>2</time>
+<topic>110</topic>
+<evaluations><MAP>0.086725</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> disney bank</query><numhits>43706</numhits><time>4</time>
+<topic>111</topic>
+<evaluations><MAP>0.137987</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> ronald reagan autographed</query><numhits>5273</numhits><time>0</time>
+<topic>112</topic>
+<evaluations><MAP>0.055197</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> stop sign</query><numhits>17919</numhits><time>2</time>
+<topic>113</topic>
+<evaluations><MAP>0.343042</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> darth vader 3</query><numhits>58664</numhits><time>5</time>
+<topic>114</topic>
+<evaluations><MAP>0.039788</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> wolverine 15</query><numhits>10989</numhits><time>1</time>
+<topic>115</topic>
+<evaluations><MAP>0.607407</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> fire department historical memorabilia</query><numhits>63471</numhits><time>6</time>
+<topic>116</topic>
+<evaluations><MAP>0.123982</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> tea tags</query><numhits>10780</numhits><time>1</time>
+<topic>117</topic>
+<evaluations><MAP>0.129121</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> resin easter</query><numhits>12132</numhits><time>1</time>
+<topic>118</topic>
+<evaluations><MAP>0.496380</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> batman statue</query><numhits>23154</numhits><time>2</time>
+<topic>119</topic>
+<evaluations><MAP>0.210121</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> michael myers mask</query><numhits>3983</numhits><time>0</time>
+<topic>120</topic>
+<evaluations><MAP>0.885083</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> large easter eggs</query><numhits>23287</numhits><time>2</time>
+<topic>121</topic>
+<evaluations><MAP>0.105612</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> m998 hmmwv</query><numhits>1231</numhits><time>0</time>
+<topic>122</topic>
+<evaluations><MAP>0.134024</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> star trek cards</query><numhits>50829</numhits><time>5</time>
+<topic>123</topic>
+<evaluations><MAP>0.166800</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> poker table</query><numhits>15027</numhits><time>1</time>
+<topic>124</topic>
+<evaluations><MAP>0.212499</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> national cash register</query><numhits>7935</numhits><time>1</time>
+<topic>125</topic>
+<evaluations><MAP>0.133173</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> sewing box</query><numhits>59201</numhits><time>5</time>
+<topic>126</topic>
+<evaluations><MAP>0.160505</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> empty green bottles</query><numhits>37439</numhits><time>4</time>
+<topic>127</topic>
+<evaluations><MAP>0.174207</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> herb grinder</query><numhits>4496</numhits><time>0</time>
+<topic>128</topic>
+<evaluations><MAP>0.172763</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> barber bottle</query><numhits>18251</numhits><time>1</time>
+<topic>129</topic>
+<evaluations><MAP>0.778518</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> book storage box</query><numhits>71272</numhits><time>6</time>
+<topic>130</topic>
+<evaluations><MAP>0.159463</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> rooster creamer</query><numhits>2352</numhits><time>0</time>
+<topic>131</topic>
+<evaluations><MAP>0.728865</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> beer tap handle</query><numhits>42139</numhits><time>4</time>
+<topic>132</topic>
+<evaluations><MAP>0.178501</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> pyramid of giza</query><numhits>95484</numhits><time>8</time>
+<topic>133</topic>
+<evaluations><MAP>0.389854</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> pilot helmet</query><numhits>4219</numhits><time>0</time>
+<topic>134</topic>
+<evaluations><MAP>0.505031</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> old fitzgerald</query><numhits>24852</numhits><time>4</time>
+<topic>135</topic>
+<evaluations><MAP>0.901056</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> hess truck</query><numhits>7410</numhits><time>1</time>
+<topic>136</topic>
+<evaluations><MAP>0.119619</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> alpha kappa alpha</query><numhits>1788</numhits><time>0</time>
+<topic>137</topic>
+<evaluations><MAP>0.366419</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> slide rule</query><numhits>7083</numhits><time>1</time>
+<topic>138</topic>
+<evaluations><MAP>0.115526</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> medals ribbons us</query><numhits>58090</numhits><time>5</time>
+<topic>139</topic>
+<evaluations><MAP>0.100330</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> movie refrigerator magnets</query><numhits>13770</numhits><time>1</time>
+<topic>140</topic>
+<evaluations><MAP>0.066797</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> batman and robin 1</query><numhits>121170</numhits><time>10</time>
+<topic>141</topic>
+<evaluations><MAP>0.132592</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> vintage sheaffer fountain pen</query><numhits>248882</numhits><time>22</time>
+<topic>142</topic>
+<evaluations><MAP>0.359092</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> harley-davidson zippo lighter</query><numhits>9549</numhits><time>1</time>
+<topic>143</topic>
+<evaluations><MAP>0.049752</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> star wars card trader pack art</query><numhits>108357</numhits><time>10</time>
+<topic>144</topic>
+<evaluations><MAP>0.230300</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> the movie collection goku figure</query><numhits>96600</numhits><time>9</time>
+<topic>145</topic>
+<evaluations><MAP>0.253450</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> dragon ball statue resin</query><numhits>31709</numhits><time>3</time>
+<topic>146</topic>
+<evaluations><MAP>0.257315</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> bell key chain keyfob</query><numhits>22103</numhits><time>2</time>
+<topic>147</topic>
+<evaluations><MAP>0.063122</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> a charlie brown christmas</query><numhits>68767</numhits><time>7</time>
+<topic>148</topic>
+<evaluations><MAP>0.333865</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> atlantic city casino chips</query><numhits>19367</numhits><time>2</time>
+<topic>149</topic>
+<evaluations><MAP>0.410046</MAP></evaluations>
+</ATIREsearch>
+<ATIREsearch>
+<query> green lantern green arrow comics</query><numhits>106792</numhits><time>10</time>
+<topic>150</topic>
+<evaluations><MAP>0.433204</MAP></evaluations>
+</ATIREsearch>
+
+Processed 150 topics (150 evaluated):
+MAP: 0.279179
+
+Total elapsed time including startup and shutdown 01:05.458 minutes
+Kernel: 55.310 seconds
+  User: 10.140 seconds
