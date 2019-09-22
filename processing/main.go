@@ -12,10 +12,13 @@ Build a CLI that allows the user to define what field that want spat out of the 
 
 import (
 	"encoding/xml"
+	"encoding/json"
+	"regexp"
 	"fmt"
 	"io/ioutil"
 	"os"
 	"strings"
+	"bytes"
 )
 
 type Set struct {
@@ -145,6 +148,19 @@ type Item struct {
 	} `xml:"ProductID"`
 }
 
+type IndexLine struct{
+	ID string `json:"_id"`
+}
+type Jsonl struct{
+	indexLine IndexLine
+	doc ConvertedDoc
+}
+type ConvertedDoc struct {
+	Docno		string   
+	Title	    string
+	Description string
+}
+
 /*
  *
  * Load a set given a filePath
@@ -264,7 +280,7 @@ func docIDsInFolder(in string) {
  * The initial Files only contain docID, title, category and description
  * Adding other fields from the original struct is straight forward
  */
-func createRaw(in string, out string) {
+func createRaw(in string, out string, fields string) {
 	files, _ := ioutil.ReadDir(in)
 	for _, file := range files {
 		if file.Name() == ".DS_Store" {
@@ -280,18 +296,137 @@ func createRaw(in string, out string) {
 			fmt.Fprintf(&b, "<DOCNO>")
 			fmt.Fprintf(&b, i.OrigID)
 			fmt.Fprintf(&b, "</DOCNO>\n")
-			fmt.Fprintf(&b, "<ORIGTITLE>%s</ORIGTITLE>\n", i.OrigTitle)
 
-			fmt.Fprintf(&b, "<CATEGORY>")
-			fmt.Fprintf(&b, i.OrigCategoryBreadcrumb)
-			fmt.Fprintf(&b, "</CATEGORY>\n")
-			fmt.Fprintf(&b, i.Description)
+			if strings.Contains(fields, "t") {
+				fmt.Fprintf(&b, "<ORIGTITLE>%s</ORIGTITLE>\n", i.OrigTitle)
+			}
+
+			if strings.Contains(fields, "c") {
+				fmt.Fprintf(&b, "<CATEGORY>")
+				fmt.Fprintf(&b, i.OrigCategoryBreadcrumb)
+				fmt.Fprintf(&b, "</CATEGORY>\n")
+			}
+
+			if strings.Contains(fields, "d") {
+				fmt.Fprintf(&b, "<CSDESCRIPTION>\n")
+				fmt.Fprintf(&b, i.Description)
+				fmt.Fprintf(&b, "</CSDESCRIPTION>\n")
+			}
+			
 			fmt.Fprintf(&b, "\n</DOC>\n")
 		}
 		_ = ioutil.WriteFile(outPath, []byte(b.String()), 0644)
 
 	}
 }
+
+
+func individualFilesDescriptionsOnly(in string, out string){
+	files, _ := ioutil.ReadDir(in)
+	for _, file := range files {
+		if file.Name() == ".DS_Store" {
+			continue
+		}
+		inPath := in + "/" + file.Name()
+		set := loadSet(inPath)
+		for _, i := range set.Items {
+			
+			dirPath := out + "/" + strings.Split(file.Name(),".")[0]
+			if _, err := os.Stat(dirPath); os.IsNotExist(err) {
+				err = os.MkdirAll(dirPath, 0755)
+				if err != nil {
+					panic(err)
+				}
+			}
+			outPath :=  dirPath + "/" + i.OrigID
+			err := ioutil.WriteFile(outPath, []byte(i.Description), 0644)
+			if err != nil{
+				fmt.Printf("%s", err)
+			}
+		}
+	}
+}
+
+
+/*
+ *
+ * Used for converting the raw Atire-indexable files back into JSON so that
+ * we can get them into elasticsearch. Because once they have been generated raw
+ * they are no longer valid XML, so XML parsing/unmarshalling is not usable.
+ * Simple string split, regex, and then JSON encode
+ *
+ */
+func convertToJSON(in string, out string){
+	b, err := ioutil.ReadFile(in) // just pass the file name
+	if err != nil {
+		fmt.Print(err)
+	}
+	docs := strings.Split(string(b), "<DOC>")[1:]
+
+	num_buckets := 1
+	bucket_size := len(docs)/num_buckets
+	
+	for i := 0;  i < num_buckets; i++ {
+		//convertedDocs := []ConvertedDoc{}
+		elementsToWrite := []Jsonl{}
+
+		for index, doc := range docs[i * bucket_size:(i + 1) * bucket_size]{	
+			docnoRegex := regexp.MustCompile(`<DOCNO>(\S+)</DOCNO>`)
+			titleRegex := regexp.MustCompile(`<ORIGTITLE>([\S\s]+)</ORIGTITLE`)
+			descRegex := regexp.MustCompile(`<CSDESCRIPTION>([\S\s]+)</CSDESCRIPTION>`)
+
+			docno := docnoRegex.FindSubmatch([]byte(doc))[1]
+			title := titleRegex.FindSubmatch([]byte(doc))[1]
+			descriptionMatches := descRegex.FindSubmatch([]byte(doc))
+			description := []byte(``)
+			if(len(descriptionMatches) > 0){
+				description = descriptionMatches[1] 
+			} 
+			
+			doc := ConvertedDoc{
+				Docno: string(docno),
+				Title: string(title),
+				Description: string(description),
+			}
+			indexLine:= IndexLine{
+				ID: string(docno),
+			}
+			element := Jsonl{
+				indexLine: indexLine,
+				doc: doc,
+			}
+			elementsToWrite = append(elementsToWrite, element)
+			//convertedDocs = append(convertedDocs, doc)
+
+			if index % 5000 == 0 && index != 0{
+				fmt.Printf("%d\n", index)
+			}
+		}
+		//jsonToDump, _ := json.MarshalIndent(convertedDocs, "", " ")
+		var buffer bytes.Buffer
+		for _, element := range elementsToWrite{
+			indexLine, err := json.Marshal(element.indexLine)
+			docLine, _ := json.Marshal(element.doc)
+
+			if err != nil{
+				panic(err)
+			}
+			fmt.Printf("%s\n", indexLine)
+			buffer.WriteString(string(indexLine) + "\n" + string(docLine) + "\n")
+		}
+
+		err := ioutil.WriteFile(fmt.Sprintf("%s-%d.out", out, i), []byte(buffer.String()), 0644)
+		if err != nil{
+			fmt.Printf("Err!")
+			panic(err)
+		} else{
+			fmt.Printf("\nFile writen\n\n")
+		}
+		
+	}
+	
+}
+
 
 func main() {
 	opName := os.Args[1]
@@ -322,18 +457,28 @@ func main() {
 
 		createXMLFromMissingDocs(foundDocIDs, originalDocuments, outputXMLpath)
 
-	// Needs Piped
+	// Loads a whole folder in
 	case "createRaw":
 		inputFolder := os.Args[2]
 		outputFolder := os.Args[3]
-		createRaw(inputFolder, outputFolder)
+		fields 	:= os.Args[4]
+		createRaw(inputFolder, outputFolder, fields)
 
 	// Needs piped
 	case "convertJudgements":
 		inFile := os.Args[2]
 		convertJudgementsFromTSV(inFile)
 
-	default:
-		fmt.Println("Incorrect command line args")
+	case "individualFiles":
+		inFolder := os.Args[2]
+		outFolder := os.Args[3]
+		individualFilesDescriptionsOnly(inFolder, outFolder)
+
+	case "convertToJSON":
+		inFile := os.Args[2]
+		outFile := os.Args[3]
+		convertToJSON(inFile, outFile)
+
 	}
+
 }
