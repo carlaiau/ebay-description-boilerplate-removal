@@ -1,0 +1,11 @@
+Now that we've got elastic search working properly, 
+
+need to get some data out of the various indexes at different weight/boosts.
+
+Need to determine why MAP is different
+
+ES out of the box for titles:
+map                     all     0.2837
+
+Simularity with BM25:
+map                     all     0.2837
