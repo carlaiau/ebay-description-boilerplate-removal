@@ -353,7 +353,9 @@ func individualFilesDescriptionsOnly(in string, out string){
  * Used for converting the raw Atire-indexable files back into JSON so that
  * we can get them into elasticsearch. Because once they have been generated raw
  * they are no longer valid XML, so XML parsing/unmarshalling is not usable.
- * Simple string split, regex, and then JSON encode
+ * Simple string split, regex, and then JSON encode.
+ * Creates multiple files to assist in indexing into Elastic Search as well
+ * as reducing RAM requirements 
  *
  */
 func convertToJSONL(in string, out string){

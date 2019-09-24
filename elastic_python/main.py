@@ -152,19 +152,30 @@ queries = [
 "a charlie brown christmas",
 "atlantic city casino chips",
 "green lantern green arrow comics"]
-hits = []
-for i in range(len(queries)):
 
-    query = \
-    {  
-    "size": 1000000,
-    "query": { "match": { "Title": queries[i] } }
-    }
+indexes = ['article', 'default', 'largest', 'original']
+weightings = []
 
-    res = es.search(index='article_bm25', body=query)
+for i in range(len(indexes)):
+    # Create a filename based on output
+    hits = []
+    for q in range(len(queries)):
+        query = \
+        {  
+            "size": 1000000,
+            "query": { "match": { "Title": queries[q] } }
+        }
 
-    
-    for rank, hit in enumerate(res['hits']['hits'], 1):
-        hits.append('{}\tQ{}\t{}\t{}\t{}\t{}'.format(i + 1, 0, hit['_id'], rank, hit['_score'], 'title-test'))
+        res = es.search(index=indexes[i], body=query)
 
-print('\n'.join(hits))
+        
+        for rank, hit in enumerate(res['hits']['hits'], 1):
+            hits.append('{}\tQ{}\t{}\t{}\t{}\t{}'.format(q + 1, 0, hit['_id'], rank, hit['_score'], 'title-test'))
+            
+        print(str(q + 1) + ": " + queries[q] + " done!")
+
+    text_file = open(indexes[i] + ".txt", "w")
+    print(indexes[i] + ".txt written!\n")
+    text_file.write('\n'.join(hits))
+    text_file.close()
+
