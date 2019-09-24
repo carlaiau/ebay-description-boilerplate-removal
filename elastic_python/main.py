@@ -1,3 +1,4 @@
+import sys
 from elasticsearch import Elasticsearch
 es = Elasticsearch(urls=['localhost'], port=9200)
 
@@ -153,20 +154,39 @@ queries = [
 "atlantic city casino chips",
 "green lantern green arrow comics"]
 
-indexes = ['article', 'default', 'largest', 'original']
-weightings = []
+boost = [10, 5, 0]
+index_to_use = sys.argv[1]
 
-for i in range(len(indexes)):
-    # Create a filename based on output
+
+# Create a filename based on output
+for b in range(len(boost)):
     hits = []
     for q in range(len(queries)):
-        query = \
-        {  
-            "size": 1000000,
-            "query": { "match": { "Title": queries[q] } }
-        }
+        if boost[b] == 10:
+            query = \
+            {  
+                "size": 1000000,
+                "query": { "match": { "Title": queries[q] } }
+            }
+        elif boost[b] == 0:
+            query = \
+            {  
+                "size": 1000000,
+                "query": { "match": { "Description": queries[q] } }
+            }
+        else:
+            query = \
+            {  
+                "size": 1000000,
+                "query": {
+                    "multi_match" : {
+                        "query": queries[q],
+                        "fields": ["Title^" + str(boost[b]), "Description^" + str(10 - boost[b])]
+                    }
+                }
+            }
 
-        res = es.search(index=indexes[i], body=query)
+        res = es.search(index=index_to_use, body=query)
 
         
         for rank, hit in enumerate(res['hits']['hits'], 1):
@@ -174,8 +194,11 @@ for i in range(len(indexes)):
             
         print(str(q + 1) + ": " + queries[q] + " done!")
 
-    text_file = open(indexes[i] + ".txt", "w")
-    print(indexes[i] + ".txt written!\n")
+    file_name = index_to_use  + "-" + str(boost[b]) + ".result"
+    text_file = open("output/" + file_name, "w")
+    
     text_file.write('\n'.join(hits))
+    
     text_file.close()
+    print(file_name +" written!\n")
 

@@ -5,3 +5,4 @@ data/
 python-boilerpipe/
 web2text/
 trec_eval-master/
+elastic_python/output/*
