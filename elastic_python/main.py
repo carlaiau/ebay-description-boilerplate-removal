@@ -1,6 +1,8 @@
 import sys
 from elasticsearch import Elasticsearch
-es = Elasticsearch(urls=['localhost'], port=9200)
+es = Elasticsearch(
+    urls=['localhost'], 
+    port=9200)
 
 queries = [
 "kazar comic",
@@ -154,7 +156,7 @@ queries = [
 "atlantic city casino chips",
 "green lantern green arrow comics"]
 
-boost = [10, 5, 0]
+boost = [0,1,2,3,4,5,6,7,8,9,10]
 index_to_use = sys.argv[1]
 
 
@@ -165,19 +167,19 @@ for b in range(len(boost)):
         if boost[b] == 10:
             query = \
             {  
-                "size": 1000000,
+                "size": 5000,
                 "query": { "match": { "Title": queries[q] } }
             }
         elif boost[b] == 0:
             query = \
             {  
-                "size": 1000000,
+                "size": 5000,
                 "query": { "match": { "Description": queries[q] } }
             }
         else:
             query = \
             {  
-                "size": 1000000,
+                "size": 5000,
                 "query": {
                     "multi_match" : {
                         "query": queries[q],
@@ -186,12 +188,30 @@ for b in range(len(boost)):
                 }
             }
 
-        res = es.search(index=index_to_use, body=query)
-
+        res = es.search(
+            index=index_to_use, 
+            body=query, 
+            request_timeout=120,
+            scroll='2m'
+            )
         
-        for rank, hit in enumerate(res['hits']['hits'], 1):
-            hits.append('{}\tQ{}\t{}\t{}\t{}\t{}'.format(q + 1, 0, hit['_id'], rank, hit['_score'], 'title-test'))
+        # Get the scroll ID
+        scroll_id = res['_scroll_id']
+        scroll_size = len(res['hits']['hits'])
+
+        while scroll_size > 0:
+
+            for rank, hit in enumerate(res['hits']['hits'], 1):
+                hits.append('{}\tQ{}\t{}\t{}\t{}\t{}'.format(q + 1, 0, hit['_id'], rank, hit['_score'], 'title-test'))
             
+            res = es.scroll(scroll_id=scroll_id, scroll='2m')
+            
+            # Update the scroll ID
+            scroll_id = res['_scroll_id']
+
+            # Get the number of results that returned in the last scroll
+            scroll_size = len(res['hits']['hits'])
+
         print(str(q + 1) + ": " + queries[q] + " done!")
 
     file_name = index_to_use  + "-" + str(boost[b]) + ".result"
