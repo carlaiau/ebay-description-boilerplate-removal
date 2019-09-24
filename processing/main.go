@@ -356,14 +356,14 @@ func individualFilesDescriptionsOnly(in string, out string){
  * Simple string split, regex, and then JSON encode
  *
  */
-func convertToJSON(in string, out string){
+func convertToJSONL(in string, out string){
 	b, err := ioutil.ReadFile(in) // just pass the file name
 	if err != nil {
 		fmt.Print(err)
 	}
 	docs := strings.Split(string(b), "<DOC>")[1:]
 
-	num_buckets := 1
+	num_buckets := 42
 	bucket_size := len(docs)/num_buckets
 	
 	for i := 0;  i < num_buckets; i++ {
@@ -402,7 +402,7 @@ func convertToJSON(in string, out string){
 				fmt.Printf("%d\n", index)
 			}
 		}
-		//jsonToDump, _ := json.MarshalIndent(convertedDocs, "", " ")
+		
 		var buffer bytes.Buffer
 		for _, element := range elementsToWrite{
 			indexLine, err := json.Marshal(element.indexLine)
@@ -411,8 +411,9 @@ func convertToJSON(in string, out string){
 			if err != nil{
 				panic(err)
 			}
-			fmt.Printf("%s\n", indexLine)
-			buffer.WriteString(string(indexLine) + "\n" + string(docLine) + "\n")
+
+			// Need to do the hack to get it to index
+			buffer.WriteString("{\"index\": " + string(indexLine) + "}\n" + string(docLine) + "\n")
 		}
 
 		err := ioutil.WriteFile(fmt.Sprintf("%s-%d.out", out, i), []byte(buffer.String()), 0644)
@@ -474,10 +475,10 @@ func main() {
 		outFolder := os.Args[3]
 		individualFilesDescriptionsOnly(inFolder, outFolder)
 
-	case "convertToJSON":
+	case "convertToJSONL":
 		inFile := os.Args[2]
 		outFile := os.Args[3]
-		convertToJSON(inFile, outFile)
+		convertToJSONL(inFile, outFile)
 
 	}
 
