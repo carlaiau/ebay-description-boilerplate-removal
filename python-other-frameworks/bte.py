@@ -50,6 +50,8 @@ def preclean(html_text):
     entities.
     """
 
+    
+
     # strip all but body
     cleaned_text = re.compile('^.*<body(\s+[^>]*)?>', re.S | re.I
             ).sub('', html_text)
@@ -57,16 +59,16 @@ def preclean(html_text):
             ).sub('', cleaned_text)
 
     # strip scripts
-    cleaned_text = re.compile('<script(\s+[^>]*)?>(.|\s)*?</script>',
-            re.S | re.I).sub('<script></script>', cleaned_text)
+    cleaned_text = re.compile('<script\\b[^>]*>(.*?)<\\/script>',
+            re.S | re.I).sub('', cleaned_text)
 
     # strip styles
-    cleaned_text = re.compile('<style(\s+[^>]*)?>(.|\s)*?</style>',
+    cleaned_text = re.compile('<style\\b[^>]*>(.*?)<\\style>',
             re.S | re.I).sub('<style></style>', cleaned_text)
 
     # html entities
     cleaned_text = html_entities(cleaned_text)
-
+    
     return cleaned_text
 
 
