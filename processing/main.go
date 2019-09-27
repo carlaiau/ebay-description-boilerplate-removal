@@ -19,6 +19,7 @@ import (
 	"os"
 	"strings"
 	"bytes"
+	"math"
 )
 
 type Set struct {
@@ -427,6 +428,48 @@ func convertToJSONL(in string, out string){
 		}
 		
 	}
+}
+
+
+func getStats(in string){
+	b, err := ioutil.ReadFile(in) // just pass the file name
+	fileNamePath := strings.Split(in, "/")
+	if err != nil {
+		fmt.Print(err)
+	}
+	docs := strings.Split(string(b), "<DOC>")[1:]
+
+	lengths := []uint32{}
+
+	for _, doc := range docs{	
+		descRegex := regexp.MustCompile(`<CSDESCRIPTION>([\S\s]+)</CSDESCRIPTION>`)
+		descriptionMatches := descRegex.FindSubmatch([]byte(doc))
+		if(len(descriptionMatches) > 0){
+			lengths = append(lengths, uint32(len(descriptionMatches[1])))
+		} else{
+			lengths = append(lengths, 0)
+		}
+	}
+
+	num_docs := uint64(len(lengths));
+	var num_chars uint64
+	for _, i := range lengths{
+		num_chars += uint64(i)
+	}
+
+	mean := float64(num_chars) / float64(num_docs)
+
+	var variance float64
+	for _, i := range lengths{
+		variance += math.Pow(float64(i) - mean, 2)
+	}
+	variance /= float64(num_docs)
+	std_dev := math.Pow(variance, 0.5)
+
+	fmt.Printf("\nFile:\t\t%s\nDocuments:\t%d\nCharacters:\t%d\nAverage:\t%.2f\nVariance:\t%.2f\nStd_Dev:\t%.2f\n", 
+		fileNamePath[len(fileNamePath) - 1], num_docs, num_chars, mean, variance, std_dev)
+
+
 	
 }
 
@@ -482,6 +525,9 @@ func main() {
 		outFile := os.Args[3]
 		convertToJSONL(inFile, outFile)
 
+	case "getStats":
+		inFile := os.Args[2]
+		getStats(inFile)
 	}
 
 }

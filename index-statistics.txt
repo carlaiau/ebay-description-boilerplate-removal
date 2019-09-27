@@ -1,0 +1,41 @@
+Index:          Original
+Characters:     5674930663
+Average:        6307.71
+Variance:       462932614.02
+Std_Dev:        21515.87
+
+Index:          Goose
+Characters:     435444091
+Average:        484.00
+Variance:       1190965.18
+Std_Dev:        1091.31
+
+Index:          Boilerpipe-largest
+Characters:     521180399
+Average:        579.29
+Variance:       944759.48
+Std_Dev:        971.99
+
+Index:          Justext
+Characters:     506791606
+Average:        563.30
+Variance:       1779938.63
+Std_Dev:        1334.14
+
+Index:          Boilerpipe-default
+Characters:     560915420
+Average:        623.46
+Variance:       1806179.08
+Std_Dev:        1343.94
+
+Index:          Boilerpipe-article
+Characters:     639351203
+Average:        710.64
+Variance:       1558440.79
+Std_Dev:        1248.38
+
+Index:          BTE
+Characters:     846822602
+Average:        941.25
+Variance:       15050807.03
+Std_Dev:        3879.54
