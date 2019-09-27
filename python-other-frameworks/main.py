@@ -14,6 +14,7 @@ import io
 import sys
 from bte import html2text
 import justext
+from goose import Goose
 
 technique = sys.argv[1]
 input_file = io.open(sys.argv[2], mode="r",  encoding="utf-8")
@@ -39,6 +40,11 @@ for doc in individual_docs[1:]:
         for paragraph in paragraphs:
             if not paragraph.is_boilerplate:
                 extracted += paragraph.text
+    
+    elif technique == 'goose' and len(sections[0]) > 1:
+        g = Goose({"enable_image_fetching":False})
+        extracted = g.extract(raw_html=sections[0]).cleaned_text
+
         
     footer = "</CSDESCRIPTION>" + sections[1]
 
