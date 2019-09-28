@@ -430,7 +430,10 @@ func convertToJSONL(in string, out string){
 	}
 }
 
-
+/* 
+	Used for getting Statistics of each index.
+	Mean and standard deviation of the character lengths
+*/
 func getStats(in string){
 	b, err := ioutil.ReadFile(in) // just pass the file name
 	fileNamePath := strings.Split(in, "/")
@@ -473,6 +476,19 @@ func getStats(in string){
 	
 }
 
+/*
+ *
+ *
+ *
+ */
+func createDocESDeleteJSONL(in string){
+	docidBytes, _ := ioutil.ReadFile(in)
+	IDStringArray := strings.Split(string(docidBytes), "\n")
+
+	for _, id := range IDStringArray{
+		fmt.Printf("{ \"delete\" : {\"_id\" : \"%s\" } }\n", id)
+	}
+}
 
 func main() {
 	opName := os.Args[1]
@@ -528,6 +544,21 @@ func main() {
 	case "getStats":
 		inFile := os.Args[2]
 		getStats(inFile)
+
+
+	case "outputEmptyDescriptions":	
+		indexFile := os.Args[2]
+		outputEmptyDescriptions(indexFile)
+	
+	case "outputFilteredJudgements":
+		judgements := os.Args[2]
+		ids := os.Args[3]
+		filterJudgements(judgements, ids)
+
+	case "outputDeletes":
+		idsFile := os.Args[2]
+		createDocESDeleteJSONL(idsFile)
 	}
+
 
 }

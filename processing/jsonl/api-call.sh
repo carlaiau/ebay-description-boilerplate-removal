@@ -1,0 +1,13 @@
+#!/bin/bash
+curl -s -H "Content-Type: application/x-ndjson" -XPOST "localhost:9200/article/_bulk" --data-binary "@deletes.jsonl"
+echo "Completed!"
+curl -s -H "Content-Type: application/x-ndjson" -XPOST "localhost:9200/original/_bulk" --data-binary "@deletes.jsonl"
+echo "Completed!"
+curl -s -H "Content-Type: application/x-ndjson" -XPOST "localhost:9200/goose/_bulk" --data-binary "@deletes.jsonl"
+echo "Completed!"
+curl -s -H "Content-Type: application/x-ndjson" -XPOST "localhost:9200/bte/_bulk" --data-binary "@deletes.jsonl"
+echo "Completed!"
+curl -s -H "Content-Type: application/x-ndjson" -XPOST "localhost:9200/default/_bulk" --data-binary "@deletes.jsonl"
+echo "Completed!"
+curl -s -H "Content-Type: application/x-ndjson" -XPOST "localhost:9200/justext/_bulk" --data-binary "@deletes.jsonl"
+echo "Completed!"

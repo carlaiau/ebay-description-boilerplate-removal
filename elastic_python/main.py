@@ -215,7 +215,7 @@ for b in range(len(boost)):
         print(str(q + 1) + ": " + queries[q] + " done!")
 
     file_name = index_to_use  + "-" + str(boost[b]) + ".result"
-    text_file = open("output/" + file_name, "w")
+    text_file = open("filtered-output/" + file_name, "w")
     
     text_file.write('\n'.join(hits))
     

@@ -6,3 +6,5 @@ python-boilerpipe/
 web2text/
 trec_eval-master/
 elastic_python/output/*
+elastic_python/old-output/*
+elastic_python/filtered-output/*
