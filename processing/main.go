@@ -20,6 +20,7 @@ import (
 	"strings"
 	"bytes"
 	"math"
+	"strconv"
 )
 
 type Set struct {
@@ -431,6 +432,105 @@ func convertToJSONL(in string, out string){
 }
 
 /* 
+ *
+ * Clone of convertTOJSONL, 
+ * but also removing documents 
+ * that are within the empties file 
+ */
+func convertToJSONLRemoveEmpties(in string, out string, empties string){
+	docidBytes, _ := ioutil.ReadFile(empties)
+	IDStringArray := strings.Split(string(docidBytes), "\n")
+
+	var missingIDs []int
+	for _, id := range IDStringArray{
+		idInt, _ := strconv.Atoi(id)
+		missingIDs = append(missingIDs, idInt)
+	}
+
+	b, err := ioutil.ReadFile(in) // just pass the file name
+	if err != nil {
+		fmt.Print(err)
+	}
+	docs := strings.Split(string(b), "<DOC>")[1:]
+
+	num_buckets := 42
+	bucket_size := len(docs)/num_buckets
+	
+	for i := 0;  i < num_buckets; i++ {
+		//convertedDocs := []ConvertedDoc{}
+		elementsToWrite := []Jsonl{}
+
+		for index, doc := range docs[i * bucket_size:(i + 1) * bucket_size]{	
+			docnoRegex := regexp.MustCompile(`<DOCNO>(\S+)</DOCNO>`)
+			titleRegex := regexp.MustCompile(`<ORIGTITLE>([\S\s]+)</ORIGTITLE`)
+			descRegex := regexp.MustCompile(`<CSDESCRIPTION>([\S\s]+)</CSDESCRIPTION>`)
+
+			docno := docnoRegex.FindSubmatch([]byte(doc))[1]
+			docnoInt, _ := strconv.Atoi(string(docno))
+
+			found := false
+			for i := range missingIDs{
+				if missingIDs[i] == docnoInt{
+					found = true
+					break
+				}
+			}
+
+			if(!found){
+
+				title := titleRegex.FindSubmatch([]byte(doc))[1]
+				descriptionMatches := descRegex.FindSubmatch([]byte(doc))
+				description := []byte(``)
+				if(len(descriptionMatches) > 0){
+					description = descriptionMatches[1] 
+				} 
+				
+				doc := ConvertedDoc{
+					Docno: string(docno),
+					Title: string(title),
+					Description: string(description),
+				}
+				indexLine:= IndexLine{
+					ID: string(docno),
+				}
+				element := Jsonl{
+					indexLine: indexLine,
+					doc: doc,
+				}
+				elementsToWrite = append(elementsToWrite, element)
+				//convertedDocs = append(convertedDocs, doc)
+			}
+
+			if index % 5000 == 0 && index != 0{
+				fmt.Printf("%d\n", index)
+			}
+		}
+		
+		var buffer bytes.Buffer
+		for _, element := range elementsToWrite{
+			indexLine, err := json.Marshal(element.indexLine)
+			docLine, _ := json.Marshal(element.doc)
+
+			if err != nil{
+				panic(err)
+			}
+
+			// Need to do the hack to get it to index
+			buffer.WriteString("{\"index\": " + string(indexLine) + "}\n" + string(docLine) + "\n")
+		}
+
+		err := ioutil.WriteFile(fmt.Sprintf("%s%d.out", out, i), []byte(buffer.String()), 0644)
+		if err != nil{
+			fmt.Printf("Err!")
+			panic(err)
+		} else{
+			fmt.Printf("\nFile writen\n\n")
+		}
+		
+	}
+}
+
+/* 
 	Used for getting Statistics of each index.
 	Mean and standard deviation of the character lengths
 */
@@ -490,6 +590,7 @@ func createDocESDeleteJSONL(in string){
 	}
 }
 
+
 func main() {
 	opName := os.Args[1]
 	switch opName {
@@ -540,6 +641,12 @@ func main() {
 		inFile := os.Args[2]
 		outFile := os.Args[3]
 		convertToJSONL(inFile, outFile)
+	
+	case "convertJSONLRemove":
+		inFile := os.Args[2]
+		outFile := os.Args[3]
+		emptyFile := os.Args[4]
+		convertToJSONLRemoveEmpties(inFile, outFile, emptyFile)
 
 	case "getStats":
 		inFile := os.Args[2]

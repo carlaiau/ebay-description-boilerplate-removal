@@ -8,3 +8,5 @@ trec_eval-master/
 elastic_python/output/*
 elastic_python/old-output/*
 elastic_python/filtered-output/*
+elastic_python/deleted-output/*
+elastic_python/new-output/*
