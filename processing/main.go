@@ -577,6 +577,149 @@ func getStats(in string){
 }
 
 /*
+ Create descriptions in a stand alone file so that Victor can clean them on a per-file basis
+ Pass in the empties file so that we don't process them
+*/
+func createDescriptionFile(index string, output_folder string, empties string){
+	docidBytes, _ := ioutil.ReadFile(empties)
+	IDStringArray := strings.Split(string(docidBytes), "\n")
+
+	var missingIDs []int
+	for _, id := range IDStringArray{
+		idInt, _ := strconv.Atoi(id)
+		missingIDs = append(missingIDs, idInt)
+	}
+
+	b, err := ioutil.ReadFile(index) // just pass the file name
+	if err != nil {
+		fmt.Print(err)
+	}
+	docs := strings.Split(string(b), "<DOC>")[1:]
+	
+	for index, doc := range docs{	
+		docnoRegex := regexp.MustCompile(`<DOCNO>(\S+)</DOCNO>`)
+		descRegex := regexp.MustCompile(`<CSDESCRIPTION>([\S\s]+)</CSDESCRIPTION>`)
+
+		docno := docnoRegex.FindSubmatch([]byte(doc))[1]
+		docnoInt, _ := strconv.Atoi(string(docno))
+
+		found := false
+		for i := range missingIDs{
+			if missingIDs[i] == docnoInt{
+				found = true
+				break
+			}
+		}
+
+		if(!found){
+			descriptionMatches := descRegex.FindSubmatch([]byte(doc))
+			description := []byte(``)
+			if(len(descriptionMatches) > 0){
+				description = descriptionMatches[1] 
+			} 
+			err := ioutil.WriteFile(fmt.Sprintf("%s%s.des", output_folder, docno), description, 0644)
+			if err != nil{
+				fmt.Printf("Err!")
+				panic(err)
+			}
+		}
+		if index % 5000 == 0 && index != 0{
+			fmt.Printf("%d done!\n", index)
+		}
+	}
+}
+
+func createIndexFromVictorDescriptions(index string, cleanDescriptionFolder string, empties string, out string){
+	docidBytes, _ := ioutil.ReadFile(empties)
+	IDStringArray := strings.Split(string(docidBytes), "\n")
+
+	var missingIDs []int
+	for _, id := range IDStringArray{
+		idInt, _ := strconv.Atoi(id)
+		missingIDs = append(missingIDs, idInt)
+	}
+
+	b, err := ioutil.ReadFile(index) // just pass the file name
+	if err != nil {
+		fmt.Print(err)
+	}
+	docs := strings.Split(string(b), "<DOC>")[1:]
+
+	num_buckets := 42
+	bucket_size := len(docs)/num_buckets
+	
+	for i := 0;  i < num_buckets; i++ {
+		elementsToWrite := []Jsonl{}
+
+		for index, doc := range docs[i * bucket_size:(i + 1) * bucket_size]{	
+			docnoRegex := regexp.MustCompile(`<DOCNO>(\S+)</DOCNO>`)
+			titleRegex := regexp.MustCompile(`<ORIGTITLE>([\S\s]+)</ORIGTITLE`)
+
+			docno := docnoRegex.FindSubmatch([]byte(doc))[1]
+			docnoInt, _ := strconv.Atoi(string(docno))
+
+			found := false
+			for i := range missingIDs{
+				if missingIDs[i] == docnoInt{
+					found = true
+					break
+				}
+			}
+
+			if(!found){
+
+				title := titleRegex.FindSubmatch([]byte(doc))[1]
+
+				/* Actually load description file */
+				description, err := ioutil.ReadFile(fmt.Sprintf("%s%d.des.clean.txt", cleanDescriptionFolder, docnoInt)) // just pass the file name
+				if err != nil {
+					fmt.Print(err)
+				}
+				
+				doc := ConvertedDoc{
+					Docno: string(docno),
+					Title: string(title),
+					Description: string(description),
+				}
+				indexLine:= IndexLine{
+					ID: string(docno),
+				}
+				element := Jsonl{
+					indexLine: indexLine,
+					doc: doc,
+				}
+				elementsToWrite = append(elementsToWrite, element)
+			}
+
+			if index % 5000 == 0 && index != 0{
+				fmt.Printf("%d\n", index)
+			}
+		}
+		
+		var buffer bytes.Buffer
+		for _, element := range elementsToWrite{
+			indexLine, err := json.Marshal(element.indexLine)
+			docLine, _ := json.Marshal(element.doc)
+
+			if err != nil{
+				panic(err)
+			}
+
+			// Need to do the hack to get it to index
+			buffer.WriteString("{\"index\": " + string(indexLine) + "}\n" + string(docLine) + "\n")
+		}
+
+		err := ioutil.WriteFile(fmt.Sprintf("%s%d.out", out, i), []byte(buffer.String()), 0644)
+		if err != nil{
+			fmt.Printf("Err!")
+			panic(err)
+		} else{
+			fmt.Printf("\nFile writen\n\n")
+		}
+		
+	}
+}
+/*
  *
  *
  *
@@ -665,7 +808,30 @@ func main() {
 	case "outputDeletes":
 		idsFile := os.Args[2]
 		createDocESDeleteJSONL(idsFile)
+
+
+	case "createDescriptionFile":
+		indexFile := os.Args[2]
+		outFolder := os.Args[3]
+		emptyFile := os.Args[4]
+		createDescriptionFile(indexFile, outFolder, emptyFile)
+
+	/*
+	./processing createIndexFromVictor ../data/indexs/td-original/titles-descriptions.xml ../data/victorDocs/clean/ ../docIDnoDescription.txt jsonl/filtered/victor/
+	*/
+	case "createIndexFromVictor":
+		indexFile := os.Args[2]
+		cleanDescriptionFolder := os.Args[3]
+		emptyFile := os.Args[4]
+		outputFolder := os.Args[5]
+		createIndexFromVictorDescriptions(indexFile, cleanDescriptionFolder, emptyFile, outputFolder)	
 	}
+
+
+	
+
+
+
 
 
 }
